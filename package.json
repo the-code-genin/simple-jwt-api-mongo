@@ -19,9 +19,9 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
+    "mongod": "^2.0.0",
+    "mongoose": "^5.11.17",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.29",
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
