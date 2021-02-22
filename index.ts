@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
+import {createConnection} from 'mongoose'
 import express from 'express'
 import corsMiddleware from 'cors'
 // import fileUploadMiddleware from 'express-fileupload'
@@ -11,9 +11,15 @@ import path from 'path'
 (async function() {
     // Load env variables.
     dotenv.config();
-
+    
     // Connect to db.
-    const db = await createConnection();
+    const db = await createConnection(process.env.DB_URI as string, {
+        dbName: process.env.DN_NAME,
+        user: process.env.DB_USERNAME,
+        pass: process.env.DB_PASSWORD,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 
     // Configure server.
     const app = express();
