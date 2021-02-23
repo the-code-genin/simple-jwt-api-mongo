@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { AuthenticationError, ServerError } from "../lib/errors";
 import JWT from "../lib/jwt";
-import User from "../models/user";
-import UserAuthToken from "../models/user_auth_token";
+import UserModel, {User} from "../models/user";
 
 export default class AuthController {
     /**
@@ -11,14 +10,14 @@ export default class AuthController {
      */
     static async login(req: Request, res: Response) {
         try {
-            let user = await User.findOne({where: {email: req.body.email}});
+            let user = await UserModel.findOne({email: req.body.email}).projection({userAuthTokens: -1}).exec();
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
-            if (!await bcrypt.compare(req.body.password, user.password)) throw new Error("Email and password combination do not match a user in our system.");
+            if (!await bcrypt.compare(req.body.password, (user.password as string))) throw new Error("Email and password combination do not match a user in our system.");
     
             res.json({
                 success: true,
                 payload: {
-                    data: user.toJSON(),
+                    data: user.toPlainJSON(),
                     access_token: JWT.generateAccessToken(user),
                     token_type: 'bearer',
                     expires_in: process.env.JWT_TTI
@@ -33,7 +32,7 @@ export default class AuthController {
      * Sign a user up and generate the initial JWT auth token
      */
     static async signup(req: Request, res: Response) {
-        let user = new User;
+        let user = new UserModel;
         user.email = req.body.email;
         user.password = await bcrypt.hash(req.body.password, 10);
         user = await user.save();
@@ -41,7 +40,7 @@ export default class AuthController {
         res.json({
             success: true,
             payload: {
-                data: user.toJSON(),
+                data: user.toPlainJSON(),
                 access_token: JWT.generateAccessToken(user),
                 token_type: 'bearer',
                 expires_in: process.env.JWT_TTI
@@ -59,10 +58,12 @@ export default class AuthController {
 
 
             // Add token to list of invalidated tokens.
-            let userAuthToken = new UserAuthToken;
-            userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
-            userAuthToken.token = token;
-            await userAuthToken.save();
+            let user = req.app.get('authUser') as User;
+            await user.update({
+                $push: {
+                    userAuthTokens: token
+                }
+            }).exec();
 
             res.json({
                 success: true,
@@ -82,7 +83,7 @@ export default class AuthController {
         res.json({
             success: true,
             payload: {
-                data: (req.app.get('authUser') as User).toJSON()
+                data: (req.app.get('authUser') as User).toPlainJSON()
             }
         });
     }
@@ -109,15 +110,16 @@ export default class AuthController {
 
 
         try {
-            let user = await User.findOne({where: {id}});
+            let user = await UserModel.findOne({id}).exec();
             if (user == null) throw new Error('User is not Authenticated');
 
 
             // Invalidate the previous auth token.
-            let userAuthToken = new UserAuthToken;
-            userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
-            userAuthToken.token = token;
-            await userAuthToken.save();
+            await user.update({
+                $push: {
+                    userAuthTokens: token
+                }
+            }).exec();
 
 
             // Generate and return new auth token.
