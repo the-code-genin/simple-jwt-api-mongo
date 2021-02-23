@@ -1,5 +1,15 @@
 import { Document, model, Schema } from "mongoose";
 
+
+// Plain JSON form
+interface UserPlainJSON {
+    email?: string,
+    created_at?: Date,
+    updated_at?: Date,
+}
+
+
+// Default user interface
 export interface User extends Document {
     email?: string,
     password?: string,
@@ -7,9 +17,11 @@ export interface User extends Document {
     created_at?: Date,
     updated_at?: Date,
     hasToken: (token: string) => Promise<number>,
-    toPlainJSON: () => Omit<User, 'password'|'userAuthTokens'>
+    toPlainJSON: () => UserPlainJSON
 }
 
+
+// Schema
 let schema = new Schema<User>({
     email: {
         type: String,
@@ -27,16 +39,19 @@ let schema = new Schema<User>({
     }
 }, {collection: 'users'});
 
+
+// Methods
 schema.methods.hasToken = function(token: string): Promise<number> {
     return model('User').count({_id: this._id, userAuthTokens: token}).exec();
 }
 
-schema.methods.toPlainJSON = function() {
+schema.methods.toPlainJSON = function(): UserPlainJSON {
     return {
         email: this.email,
         created_at: this.created_at,
         updated_at: this.updated_at
     }
 }
+
 
 export default model('User', schema);
