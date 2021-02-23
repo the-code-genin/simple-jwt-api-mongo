@@ -47,7 +47,7 @@ export default class AuthValidator {
             return;
         }
 
-        if (await UserModel.count({email: req.body.email}).exec() != 0) {
+        if (await UserModel.countDocuments({email: req.body.email}).exec() != 0) {
             res.json(InvalidFormDataError('This email is not available.'));
             return;
         }
