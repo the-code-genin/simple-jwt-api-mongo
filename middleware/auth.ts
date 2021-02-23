@@ -1,6 +1,6 @@
 import jwt from '../lib/jwt'
 import {AuthenticationError} from '../lib/errors'
-import Users, {User} from '../models/user'
+import UserModel, {User} from '../models/user'
 import { NextFunction, Request, Response } from 'express';
 
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -21,7 +21,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
 
 
     try {
-        let user = (await Users.findOne({id}).exec()) as User|null;
+        let user = (await UserModel.findOne({id}).exec()) as User|null;
 
         if (user == null) throw new Error('User is not Authenticated');
         else if (await user.hasToken(token) != 0) throw new Error('User is not Authenticated');
