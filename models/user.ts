@@ -5,10 +5,11 @@ export interface User extends Document {
     password?: string,
     userAuthTokens?: string[],
     created_at?: Date,
-    updated_at?: Date
+    updated_at?: Date,
+    hasToken: (token: string) => Promise<number>
 }
 
-let userSchema = new Schema({
+let schema = new Schema({
     email: {
         type: String,
         index: true
@@ -25,4 +26,8 @@ let userSchema = new Schema({
     }
 }, {collection: 'users'});
 
-export default model('user', userSchema);
+schema.methods.hasToken = function(token: string): Promise<number> {
+    return model('User').count({_id: this._id, userAuthTokens: token}).exec();
+}
+
+export default model('User', schema);
