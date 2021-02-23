@@ -1,4 +1,12 @@
-import { model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
+
+export interface User extends Document {
+    email?: string,
+    password?: string,
+    userAuthTokens?: string[],
+    created_at?: Date,
+    updated_at?: Date
+}
 
 let userSchema = new Schema({
     email: {
@@ -15,8 +23,6 @@ let userSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
+}, {collection: 'users'});
 
-let userModel = model('user', userSchema);
-
-export default userModel;
+export default model('user', userSchema);
