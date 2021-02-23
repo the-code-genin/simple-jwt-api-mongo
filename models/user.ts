@@ -3,6 +3,7 @@ import { Document, model, Schema } from "mongoose";
 
 // Plain JSON form
 interface UserPlainJSON {
+    id?: string,
     email?: string,
     created_at?: Date,
     updated_at?: Date,
@@ -47,6 +48,7 @@ schema.methods.hasToken = function(token: string): Promise<number> {
 
 schema.methods.toPlainJSON = function(): UserPlainJSON {
     return {
+        id: this.id,
         email: this.email,
         created_at: this.created_at,
         updated_at: this.updated_at
