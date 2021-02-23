@@ -10,7 +10,7 @@ export default class AuthController {
      */
     static async login(req: Request, res: Response) {
         try {
-            let user = await UserModel.findOne({email: req.body.email}).projection({userAuthTokens: -1}).exec();
+            let user = await UserModel.findOne({email: req.body.email}, {userAuthTokens: -1}).exec();
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
             if (!await bcrypt.compare(req.body.password, (user.password as string))) throw new Error("Email and password combination do not match a user in our system.");
     
@@ -110,7 +110,7 @@ export default class AuthController {
 
 
         try {
-            let user = await UserModel.findOne({id}).exec();
+            let user = await UserModel.findOne({id}, {userAuthTokens: -1}).exec();
             if (user == null) throw new Error('User is not Authenticated');
 
 
