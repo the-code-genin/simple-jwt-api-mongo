@@ -48,7 +48,7 @@ schema.methods.hasToken = function(token: string): Promise<number> {
 
 schema.methods.toPlainJSON = function(): UserPlainJSON {
     return {
-        id: this.id,
+        id: this._id,
         email: this.email,
         created_at: this.created_at,
         updated_at: this.updated_at

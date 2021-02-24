@@ -36,7 +36,7 @@ export default class JWT {
         return jwt.sign({
             iss: process.env.APP_URL,
             exp: (new Date).getTime() + Number(process.env.JWT_TTI),
-            sub: user.id
+            sub: user._id
         }, String(process.env.JWT_SECRET));
     }
 }
