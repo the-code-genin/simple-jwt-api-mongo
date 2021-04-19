@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { AuthenticationError, ServerError } from "../lib/errors";
 import JWT from "../lib/jwt";
 import UserModel, {User} from "../models/user";
+import AuthToken from "../models/auth-token";
 
 export default class AuthController {
     /**
@@ -10,7 +11,7 @@ export default class AuthController {
      */
     static async login(req: Request, res: Response) {
         try {
-            let user = await UserModel.findOne({email: req.body.email}, {userAuthTokens: 0}).exec();
+            let user = await UserModel.findOne({email: req.body.email}).exec();
 
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
             else if (!await bcrypt.compare(req.body.password, (user.password as string))) throw new Error("Email and password combination do not match a user in our system.");
@@ -18,7 +19,7 @@ export default class AuthController {
             res.json({
                 success: true,
                 payload: {
-                    data: user.toPlainJSON(),
+                    data: user.toJSON(),
                     access_token: JWT.generateAccessToken(user),
                     token_type: 'bearer',
                     expires_in: process.env.JWT_TTI
@@ -41,7 +42,7 @@ export default class AuthController {
         res.json({
             success: true,
             payload: {
-                data: user.toPlainJSON(),
+                data: user.toJSON(),
                 access_token: JWT.generateAccessToken(user),
                 token_type: 'bearer',
                 expires_in: process.env.JWT_TTI
@@ -60,11 +61,10 @@ export default class AuthController {
 
             // Add token to list of invalidated tokens.
             let user = req.app.get('authUser') as User;
-            await user.update({
-                $push: {
-                    userAuthTokens: token
-                }
-            }).exec();
+            await AuthToken.create({
+                token,
+                user_id: user._id
+            });
 
             res.json({
                 success: true,
@@ -84,7 +84,7 @@ export default class AuthController {
         res.json({
             success: true,
             payload: {
-                data: (req.app.get('authUser') as User).toPlainJSON()
+                data: (req.app.get('authUser') as User).toJSON()
             }
         });
     }
@@ -111,16 +111,15 @@ export default class AuthController {
 
 
         try {
-            let user = await UserModel.findOne({_id: id}, {userAuthTokens: 0}).exec();
+            let user = await UserModel.findOne({_id: id}).exec();
             if (user == null) throw new Error('User is not Authenticated');
 
 
             // Invalidate the previous auth token.
-            await user.update({
-                $push: {
-                    userAuthTokens: token
-                }
-            }).exec();
+            await AuthToken.create({
+                token,
+                user_id: user._id
+            });
 
 
             // Generate and return new auth token.
