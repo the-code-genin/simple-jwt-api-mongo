@@ -1,9 +1,8 @@
 import dotenv from 'dotenv'
 import 'reflect-metadata'
-import {connect, createConnection} from 'mongoose'
+import {connect} from 'mongoose'
 import express from 'express'
 import corsMiddleware from 'cors'
-// import fileUploadMiddleware from 'express-fileupload'
 import routes from './routes'
 import path from 'path'
 
@@ -35,7 +34,6 @@ import path from 'path'
     app.use('/storage', express.static(path.join(__dirname, '/storage/public')));
     app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
-    // app.use(fileUploadMiddleware());
     app.use('/api/*', express.json());
 
 
