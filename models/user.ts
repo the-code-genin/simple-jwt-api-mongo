@@ -5,6 +5,7 @@ import { Document, LeanDocument, model, Schema } from "mongoose";
 export interface User extends Document {
     email?: string,
     password?: string,
+    status?: 'active'|'banned',
     created_at?: Date,
     updated_at?: Date,
     hasToken: (token: string) => Promise<number>
@@ -18,6 +19,12 @@ let schema = new Schema<User>({
         index: true
     },
     password: String,
+    status: {
+        type: String,
+        enum: ['active', 'banned'],
+        required: true,
+        default: 'active'
+    },
     created_at: {
         type: Date,
         default: Date.now
