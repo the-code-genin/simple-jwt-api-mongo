@@ -1,24 +1,13 @@
-import { Document, model, Schema } from "mongoose";
-
-
-// Plain JSON form
-interface UserPlainJSON {
-    id?: string,
-    email?: string,
-    created_at?: Date,
-    updated_at?: Date,
-}
+import { Document, LeanDocument, model, Schema } from "mongoose";
 
 
 // Default user interface
 export interface User extends Document {
     email?: string,
     password?: string,
-    userAuthTokens?: string[],
     created_at?: Date,
     updated_at?: Date,
-    hasToken: (token: string) => Promise<number>,
-    toPlainJSON: () => UserPlainJSON
+    hasToken: (token: string) => Promise<number>
 }
 
 
@@ -29,7 +18,6 @@ let schema = new Schema<User>({
         index: true
     },
     password: String,
-    userAuthTokens: [String],
     created_at: {
         type: Date,
         default: Date.now
@@ -42,11 +30,11 @@ let schema = new Schema<User>({
 
 
 // Methods
-schema.methods.hasToken = function(token: string): Promise<number> {
-    return model('User').count({_id: this._id, userAuthTokens: token}).exec();
+schema.methods.hasToken = async function(token: string): Promise<boolean> {
+    return await model('AuthToken').countDocuments({user_id: this._id, token}).exec() != 0;
 }
 
-schema.methods.toPlainJSON = function(): UserPlainJSON {
+schema.methods.toJSON = function(): LeanDocument<User> {
     return {
         id: this._id,
         email: this.email,
