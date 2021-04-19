@@ -21,10 +21,11 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
 
 
     try {
-        let user = await UserModel.findOne({_id: id}, {userAuthTokens: 0}).exec();
+        let user = await UserModel.findOne({_id: id}).exec();
 
         if (user == null) throw new Error('User is not Authenticated');
-        else if (await user.hasToken(token) != 0) throw new Error('User is not Authenticated');
+        else if (await user.hasToken(token)) throw new Error('User is not Authenticated');
+        else if (user.status != 'active') throw new Error('User is banned from using the platform');
 
         req.app.set('authUser', user);
         next();
