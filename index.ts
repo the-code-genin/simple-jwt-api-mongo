@@ -13,7 +13,7 @@ import path from 'path'
     
     // Connect to db.
     const db = await connect(process.env.DB_URI as string, {
-        dbName: process.env.DN_NAME,
+        dbName: process.env.DB_NAME,
         user: process.env.DB_USERNAME,
         pass: process.env.DB_PASSWORD,
         useNewUrlParser: true,
