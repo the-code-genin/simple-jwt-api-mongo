@@ -40,13 +40,17 @@ export default async function generatePayload<T extends Document>(
         // Calculate the offset to start fetching records from.
         let offset = ((page - 1) * perPage);
 
+        const data = await model.find(searchData, projection).sort(sortData).skip(offset).limit(perPage).exec();
+
         return {
             total,
             per_page: perPage,
             current_page: page,
+            from: offset + 1,
+            to: offset + data.length,
             prev_page: page > 1 ? page - 1 : null,
             next_page: page < totalPages ? page + 1 : null,
-            data: await model.find(searchData, projection).sort(sortData).skip(offset).limit(perPage).exec(),
+            data,
         }
     } else {
         return {
