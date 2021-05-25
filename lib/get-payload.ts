@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { Document, FilterQuery, Model } from "mongoose";
+import ResponsePayload from "./interfaces/response-payload";
 
 export default async function generatePayload<T extends Document>(
     request: Request, 
@@ -27,9 +28,11 @@ export default async function generatePayload<T extends Document>(
                 total,
                 per_page: perPage,
                 current_page: 1,
+                from: 0,
+                to: 0,
                 prev_page: null,
                 next_page: null,
-                data: []
+                data: [],
             };
         }
 
@@ -40,8 +43,10 @@ export default async function generatePayload<T extends Document>(
         // Calculate the offset to start fetching records from.
         let offset = ((page - 1) * perPage);
 
+        // Get data
         const data = await model.find(searchData, projection).sort(sortData).skip(offset).limit(perPage).exec();
 
+        // Response
         return {
             total,
             per_page: perPage,
