@@ -1,5 +1,4 @@
-// Declare interfaces
-interface ResponsePayload<T> {
+export default interface ResponsePayload<T> {
     data?: T|T[],
     total?: number,
     per_page?: number,
