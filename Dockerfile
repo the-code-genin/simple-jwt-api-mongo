@@ -16,4 +16,4 @@ COPY . .
 RUN npm install
 
 # Start app in production mode
-CMD [ "npm", "run start" ]
+CMD [ "ts-node", "index.ts" ]
