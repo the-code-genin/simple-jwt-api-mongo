@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "ts-mocha tests/*.test.ts",
-    "serve": "nodemon index.ts",
+    "dev": "nodemon index.ts",
     "start": "ts-node index.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },

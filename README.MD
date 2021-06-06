@@ -24,7 +24,7 @@ This is a simple JWT API that uses mongodb as it's datastore written completely 
 - Run `npm install` or `yarn install` to install the app dependencies.
 - Copy the `.env.example` file to `.env`.
 - Update your `.env` file according to your web server's environmen
-- Run `npm run serve` or `npm start` to fire up the web server in development or production mode respectively.
+- Run `npm run dev` or `npm start` to fire up the web server in development or production mode respectively.
 
 # Licensing
 
