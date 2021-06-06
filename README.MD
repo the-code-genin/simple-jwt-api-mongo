@@ -1,6 +1,6 @@
-# flip-backend
+# simple-jwt-api-mongo
 
-Flip Backend is the server that hosts all endpoint that powers both candidate and administrator application
+This is a simple JWT API that uses mongodb as it's datastore written completely in typescript.
 
 ## Requirements
 
