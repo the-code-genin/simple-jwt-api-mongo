@@ -24,8 +24,7 @@ Flip Backend is the server that hosts all endpoint that powers both candidate an
 - Run `npm install` or `yarn install` to install the app dependencies.
 - Copy the `.env.example` file to `.env`.
 - Update your `.env` file according to your web server's environmen
-- Run `npm run serve` to fire up the web server.
-- Build something awesome!
+- Run `npm run serve` or `npm run start` to fire up the web server in development or production mode respectively.
 
 # Licensing
 
