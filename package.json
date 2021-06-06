@@ -1,7 +1,7 @@
 {
-  "name": "flip-backend",
+  "name": "simple-jwt-api-mongo",
   "version": "1.0.0",
-  "description": "Flip Backend is the server that hosts all endpoint that powers both candidate and administrator application.",
+  "description": "This is a simple JWT API that uses mongodb as it's datastore written completely in typescript.",
   "main": "index.ts",
   "scripts": {
     "test": "ts-mocha tests/*.test.ts",
