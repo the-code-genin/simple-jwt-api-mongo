@@ -15,5 +15,8 @@ COPY . .
 # Install npm packages
 RUN npm install
 
+# Expose the necessary ports
+EXPOSE 8080
+
 # Start app in production mode
 CMD [ "npm", "start" ]
