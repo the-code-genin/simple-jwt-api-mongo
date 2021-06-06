@@ -6,7 +6,7 @@
   "scripts": {
     "test": "ts-mocha tests/*.test.ts",
     "serve": "nodemon index.ts",
-    "build": "tsc --esModuleInterop --outDir dist index.ts && cp -r public ./dist/public && cp -r storage ./dist/storage && cp -r views ./dist/views && cp .env ./dist/.env",
+    "start": "ts-node index.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "author": "Mohammed Adekunle <adekunle3317@gmail.com>",
