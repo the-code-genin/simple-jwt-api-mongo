@@ -1,7 +1,5 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, LeanDocument, model, Schema } from "mongoose";
 
-
-// Document
 export interface AuthToken extends Document {
     token?: string,
     user_id?: string,
@@ -9,8 +7,6 @@ export interface AuthToken extends Document {
     updated_at?: Date
 }
 
-
-// Schema
 let schema = new Schema<AuthToken>({
     token: {
         type: String,
@@ -32,5 +28,10 @@ let schema = new Schema<AuthToken>({
     }
 }, {collection: 'auth_tokens'});
 
+schema.methods.toJSON = function(): LeanDocument<AuthToken> {
+    let output = Object.assign({id: this._id}, this);
+    delete output._id;
+    return output;
+}
 
 export default model('AuthToken', schema);
