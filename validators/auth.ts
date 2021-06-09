@@ -20,7 +20,7 @@ export default class AuthValidator {
         let validation = new Validator(req.body, rules, messages);
     
         if (validation.fails()) {
-            res.json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
+            res.status(400).json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
             return;
         }
     
@@ -43,12 +43,12 @@ export default class AuthValidator {
         let validation = new Validator(req.body, rules, messages);
     
         if (validation.fails()) {
-            res.json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
+            res.status(400).json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
             return;
         }
 
         if (await UserModel.countDocuments({email: req.body.email}).exec() != 0) {
-            res.json(InvalidFormDataError('This email is not available.'));
+            res.status(409).json(InvalidFormDataError('This email is not available.'));
             return;
         }
 
