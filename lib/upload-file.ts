@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import randomString from './random-string';
 
 export default function UploadFile(fileData: string, to: string): string {
     if (!/^data\:.+\/.+\;base64\,.+$/i.test(fileData)) throw new Error('Invalid file uploaded')
@@ -12,11 +13,7 @@ export default function UploadFile(fileData: string, to: string): string {
 
 
     // Generate a random file name
-    let randomName = "";
-    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 100; i++) {
-        randomName += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
+    let randomName = randomString(100);
     let fileName = [randomName, String(Math.floor(Math.random() * 999999)) + '.' + fileExtension]
         .join(' ')
         .replace(/\s+/g, '-');
