@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import Validator from 'validatorjs'
 import UserModel from '../models/user';
-import {InvalidFormDataError} from '../lib/errors';
+import {ConflictError, InvalidFormDataError} from '../lib/errors';
 
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {
@@ -48,7 +48,7 @@ export default class AuthValidator {
         }
 
         if (await UserModel.countDocuments({email: req.body.email}).exec() != 0) {
-            res.status(409).json(InvalidFormDataError('This email is not available.'));
+            res.status(409).json(ConflictError('This email is not available.'));
             return;
         }
 
