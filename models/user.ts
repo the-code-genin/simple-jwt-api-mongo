@@ -43,6 +43,7 @@ schema.methods.hasToken = async function(token: string): Promise<boolean> {
 
 schema.methods.toJSON = function(): LeanDocument<User> {
     let output = Object.assign({id: this._id}, this);
+    delete output._id;
     delete output.password;
     return output;
 }
