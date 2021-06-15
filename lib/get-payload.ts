@@ -11,10 +11,10 @@ export default async function generatePayload<T extends Document>(
 ): Promise<ResponsePayload<T>> {
     let total = await model.countDocuments(searchData).exec();
 
-    if (request.query.page != null || request.query.perPage != null) {
+    if (request.query.page != null || request.query.per_page != null) {
         // Parse page and per page variables
         let page = request.query.page != null ? Math.ceil(Number(request.query.page)) : 1;
-        let perPage = request.query.perPage != null ? Math.ceil(Number(request.query.perPage)) : 10;
+        let perPage = request.query.per_page != null ? Math.ceil(Number(request.query.per_page)) : 10;
 
         // Fix per page variable
         if (perPage < 1) perPage = 1;
