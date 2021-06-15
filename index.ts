@@ -6,16 +6,17 @@ import corsMiddleware from 'cors'
 import routes from './routes'
 import path from 'path'
 
+process.on('SIGINT', () => process.exit());
 
 (async function() {
     // Load env variables.
     dotenv.config();
     
     // Connect to db.
-    const db = await connect(process.env.DB_URI as string, {
-        dbName: process.env.DB_NAME,
-        user: process.env.DB_USERNAME,
-        pass: process.env.DB_PASSWORD,
+    const db = await connect(String(process.env.DB_URI), {
+        dbName: String(process.env.DB_NAME),
+        user: String(process.env.DB_USERNAME),
+        pass: String(process.env.DB_PASSWORD),
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
