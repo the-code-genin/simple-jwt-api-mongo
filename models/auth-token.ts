@@ -29,7 +29,9 @@ let schema = new Schema<AuthToken>({
 }, {collection: 'auth_tokens'});
 
 schema.methods.toJSON = function(): LeanDocument<AuthToken> {
-    let output = this.toObject();
+    let output = Object.assign(this.toObject(), {
+        id: this._id
+    });
     delete output._id;
     delete output.__v;
     return output;
