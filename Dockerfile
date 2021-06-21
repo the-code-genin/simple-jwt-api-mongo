@@ -4,5 +4,5 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
-EXPOSE 8080
+RUN npm run migration up
 CMD [ "npm", "start" ]
