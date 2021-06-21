@@ -14,7 +14,7 @@ export default class AuthController {
             let user = await UserModel.findOne({email: req.body.email}).exec();
 
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
-            else if (!await bcrypt.compare(req.body.password, (user.password as string))) throw new Error("Email and password combination do not match a user in our system.");
+            else if (!await bcrypt.compare(req.body.password, String(user.password))) throw new Error("Email and password combination do not match a user in our system.");
 
             res.json({
                 success: true,
@@ -55,7 +55,7 @@ export default class AuthController {
      */
     static async logout(req: Request, res: Response) {
         try {
-            let matches = /^Bearer (.+)$/i.exec(req.get('Authorization') as string) as RegExpExecArray;
+            let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
             let token = matches[1].trim();
 
 
@@ -93,7 +93,7 @@ export default class AuthController {
      * Refresh a user's JWT auth token and invalidate the previous token.
      */
     static async refresh(req: Request, res: Response) {
-        let header = req.get('Authorization') as string;
+        let header = String(req.get('Authorization'));
         if (!/^Bearer (.+)$/i.test(header)) { // If bearer token is not present.
             res.json(AuthenticationError('User is not Authenticated'));
             return;
