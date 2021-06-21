@@ -4,7 +4,7 @@ import UserModel from '../models/user'
 import { NextFunction, Request, Response } from 'express';
 
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
-    let header = req.get('Authorization') as string;
+    let header = String(req.get('Authorization'));
     if (!/^Bearer (.+)$/i.test(header)) { // Bearer token is not present
         res.status(401).json(AuthenticationError('User is not Authenticated'));
         return;
