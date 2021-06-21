@@ -1,4 +1,4 @@
-import ApiResponse from "./interfaces/api-response";
+import ApiResponse from "./api-response";
 
 export function ApplicationError(code: number, type: string, message: string): ApiResponse {
     return {
