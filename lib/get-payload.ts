@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Document, FilterQuery, Model } from "mongoose";
-import ResponsePayload from "./interfaces/response-payload";
+import ResponsePayload from "./response-payload";
 
 export default async function generatePayload<T extends Document>(
     request: Request, 
