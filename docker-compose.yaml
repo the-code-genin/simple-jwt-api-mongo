@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+    database:
+        image: mongo:latest
+        volumes:
+            - "db-data:/data/db"
+        networks:
+            - "simple-jwt-api-mongo"
+
+    app:
+        build: .
+        volumes:
+            - "app-data:/app/storage"
+        networks:
+            - "simple-jwt-api-mongo"
+        environment:
+            NODE_ENV: production
+            APP_URL: http://127.0.0.1:8080
+            PORT: 80
+            APP_KEY:
+            DB_URI: mongodb://database:27017
+            DB_NAME: simple_jwt_api
+            DB_USERNAME: ""
+            DB_PASSWORD: ""
+            JWT_TTI: 3600
+            ports:
+            - "8080:80"
+
+volumes:
+  db-data:
+  app-data:
+
+networks:
+  simple-jwt-api-mongo:
