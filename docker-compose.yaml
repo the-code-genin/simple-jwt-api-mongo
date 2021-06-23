@@ -8,7 +8,7 @@ services:
         networks:
             - "simple-jwt-api-mongo"
 
-    app:
+    simple-jwt-api-mongo-service:
         build: .
         volumes:
             - "app-data:/app/storage"
