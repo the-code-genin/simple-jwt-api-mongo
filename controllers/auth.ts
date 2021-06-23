@@ -16,7 +16,7 @@ export default class AuthController {
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
             else if (!await bcrypt.compare(req.body.password, String(user.password))) throw new Error("Email and password combination do not match a user in our system.");
 
-            res.json({
+            res.status(200).json({
                 success: true,
                 payload: {
                     data: user.toJSON(),
@@ -26,7 +26,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.json(AuthenticationError((e as Error).message));
+            res.status(401).json(AuthenticationError((e as Error).message));
         }
     }
 
@@ -39,7 +39,7 @@ export default class AuthController {
         user.password = await bcrypt.hash(req.body.password, 10);
         user = await user.save();
 
-        res.json({
+        res.status(201).json({
             success: true,
             payload: {
                 data: user.toJSON(),
@@ -66,7 +66,7 @@ export default class AuthController {
                 user_id: user._id
             });
 
-            res.json({
+            res.status(200).json({
                 success: true,
                 payload: {
                     data: {}
@@ -81,7 +81,7 @@ export default class AuthController {
      * Request a user object
      */
     static async index(req: Request, res: Response) {
-        res.json({
+        res.status(200).json({
             success: true,
             payload: {
                 data: (req.app.get('authUser') as User).toJSON()
@@ -123,7 +123,7 @@ export default class AuthController {
 
 
             // Generate and return new auth token.
-            res.json({
+            res.status(200).json({
                 success: true,
                 payload: {
                     access_token: JWT.generateAccessToken(user),
@@ -132,7 +132,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.json(AuthenticationError((e as Error).message));
+            res.status(401).json(AuthenticationError((e as Error).message));
         }
     }
 }
