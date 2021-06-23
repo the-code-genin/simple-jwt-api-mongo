@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import Validator from 'validatorjs'
 import UserModel from '../models/user';
-import {ConflictError, InvalidFormDataError} from '../lib/errors';
+import { ConflictError, InvalidFormDataError } from '../lib/errors';
 
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {
@@ -9,21 +9,22 @@ export default class AuthValidator {
             email: 'required|email',
             password: 'required|min:6'
         };
-    
+
         let messages = {
             'email.required': 'Email address is required',
             'email.email': 'A valid email address is required',
             'password.required': 'Password is required',
             'password.min': 'Password must be at least 6 characters long'
         };
-    
+
         let validation = new Validator(req.body, rules, messages);
-    
+
         if (validation.fails()) {
-            res.status(400).json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
+            res.status(400)
+                .json(InvalidFormDataError(String(validation.errors.first(Object.keys(validation.errors.all())[0]))));
             return;
         }
-    
+
         next();
     }
 
@@ -32,22 +33,23 @@ export default class AuthValidator {
             email: 'required|email',
             password: 'required|min:6'
         };
-    
+
         let messages = {
             'email.required': 'Email address is required',
             'email.email': 'A valid email address is required',
             'password.required': 'Password is required',
             'password.min': 'Password must be at least 6 characters long'
         };
-    
+
         let validation = new Validator(req.body, rules, messages);
-    
+
         if (validation.fails()) {
-            res.status(400).json(InvalidFormDataError(validation.errors.first(Object.keys(validation.errors.all())[0]) as string));
+            res.status(400)
+                .json(InvalidFormDataError(String(validation.errors.first(Object.keys(validation.errors.all())[0]))));
             return;
         }
 
-        if (await UserModel.countDocuments({email: req.body.email}).exec() != 0) {
+        if (await UserModel.countDocuments({ email: req.body.email }).exec() != 0) {
             res.status(409).json(ConflictError('This email is not available.'));
             return;
         }
