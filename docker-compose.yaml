@@ -9,7 +9,8 @@ services:
             - "simple-jwt-api-mongo"
 
     simple-jwt-api-mongo-service:
-        build: .
+        build:
+            context: .
         volumes:
             - "app-data:/app/storage"
         networks:
