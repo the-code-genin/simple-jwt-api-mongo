@@ -20,7 +20,7 @@ export function AuthenticationError(message: string = 'User is not Authenticated
 }
 
 export function ForbiddenError(message: string = 'User is forbidden from accessing this resource!') {
-    return ApplicationError(401, 'ForbiddenError', message);
+    return ApplicationError(403, 'ForbiddenError', message);
 }
 
 export function NotFoundError(message: string = 'The resource you were looking for was not found on this server.') {
