@@ -132,7 +132,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.status(500).json(AuthenticationError((e as Error).message));
+            res.status(401).json(AuthenticationError((e as Error).message));
         }
     }
 }
