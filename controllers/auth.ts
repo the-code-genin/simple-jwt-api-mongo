@@ -78,7 +78,7 @@ export default class AuthController {
     /**
      * Request a user object
      */
-    static async index(req: Request, res: Response) {
+    static async getMe(req: Request, res: Response) {
         res.status(200).json({
             success: true,
             payload: {
