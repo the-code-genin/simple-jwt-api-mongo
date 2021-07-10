@@ -24,7 +24,6 @@ services:
             DB_NAME: simple_jwt_api
             DB_USERNAME: ""
             DB_PASSWORD: ""
-            JWT_TTI: 3600
         ports:
             - "8080:80"
 
