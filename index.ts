@@ -1,24 +1,23 @@
-import dotenv from 'dotenv'
-import 'reflect-metadata'
-import {connect} from 'mongoose'
-import express from 'express'
-import corsMiddleware from 'cors'
-import routes from './routes'
-import path from 'path'
+import dotenv from 'dotenv';
+import 'reflect-metadata';
+import { connect } from 'mongoose';
+import express from 'express';
+import corsMiddleware from 'cors';
+import routes from './routes';
+import path from 'path';
+import 'twig';
 
 process.on('SIGINT', () => process.exit());
 
-(async function() {
+(async function () {
     // Load env variables.
     dotenv.config();
-    
+
     // Connect to db.
     const db = await connect(String(process.env.DB_URI), {
         dbName: String(process.env.DB_NAME),
         user: String(process.env.DB_USERNAME),
-        pass: String(process.env.DB_PASSWORD),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        pass: String(process.env.DB_PASSWORD)
     });
 
     // Configure server.
@@ -28,7 +27,7 @@ process.on('SIGINT', () => process.exit());
     app.set('root_dir', __dirname);
     app.set('port', process.env.PORT || 8080);
     app.set('db', db);
-    app.set('view engine', 'ejs');
+    app.set('view engine', 'twig');
 
 
     // Add middleware
