@@ -15,7 +15,7 @@ This is a simple JWT API that uses mongodb as it's datastore written completely 
 - Written completely in [Typescript](https://www.typescriptlang.org/).
 - [JWT](https://jwt.io/) authentication endpoints out of the box for SPAs and mobile apps.
 - [Mocha](https://mochajs.org/) for testing.
-- [EJS](https://ejs.co/) for view templating.
+- [Twig](https://github.com/twigjs/twig.js) for view templating.
 - A well defined directory structure.
 
 # How To Install
