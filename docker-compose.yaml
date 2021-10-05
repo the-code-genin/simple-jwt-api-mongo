@@ -18,14 +18,14 @@ services:
         environment:
             NODE_ENV: production
             APP_URL: http://127.0.0.1:8080
-            PORT: 80
+            PORT: 8080
             APP_KEY:
             DB_URI: mongodb://database:27017
             DB_NAME: simple_jwt_api
             DB_USERNAME: ""
             DB_PASSWORD: ""
         ports:
-            - "8080:80"
+            - "8080:8080"
 
 volumes:
   db-data:
