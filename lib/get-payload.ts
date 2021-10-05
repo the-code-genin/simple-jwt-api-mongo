@@ -3,11 +3,11 @@ import { Document, FilterQuery, Model } from "mongoose";
 import ResponsePayload from "./response-payload";
 
 export default async function generatePayload<T extends Document>(
-    request: Request, 
+    request: Request,
     model: Model<T>,
     searchData: FilterQuery<T>,
-    sortData: {[key: string]: 'asc'|'desc'},
-    projection: {[key: string]: 0|1}|null = null
+    sortData: { [key: string]: 'asc' | 'desc' },
+    projection: { [key: string]: 0 | 1 } | null = null
 ): Promise<ResponsePayload<T>> {
     let total = await model.countDocuments(searchData).exec();
 
