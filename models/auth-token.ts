@@ -26,9 +26,9 @@ let schema = new Schema<AuthToken>({
         type: Date,
         default: Date.now
     }
-}, {collection: 'auth_tokens'});
+}, { collection: 'auth_tokens' });
 
-schema.methods.toJSON = function(): LeanDocument<AuthToken> {
+schema.methods.toJSON = function (): LeanDocument<AuthToken> {
     let output = Object.assign(this.toObject(), {
         id: this._id
     });

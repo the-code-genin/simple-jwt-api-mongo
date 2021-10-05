@@ -5,7 +5,7 @@ import { Document, LeanDocument, model, Schema } from "mongoose";
 export interface User extends Document {
     email?: string,
     password?: string,
-    status?: 'active'|'banned',
+    status?: 'active' | 'banned',
     created_at?: Date,
     updated_at?: Date,
     hasToken: (token: string) => Promise<number>
@@ -33,15 +33,15 @@ let schema = new Schema<User>({
         type: Date,
         default: Date.now
     }
-}, {collection: 'users'});
+}, { collection: 'users' });
 
 
 // Methods
-schema.methods.hasToken = async function(token: string): Promise<boolean> {
-    return await model('AuthToken').countDocuments({user_id: this._id, token}).exec() != 0;
+schema.methods.hasToken = async function (token: string): Promise<boolean> {
+    return await model('AuthToken').countDocuments({ user_id: this._id, token }).exec() != 0;
 }
 
-schema.methods.toJSON = function(): LeanDocument<User> {
+schema.methods.toJSON = function (): LeanDocument<User> {
     let output = Object.assign(this.toObject(), {
         id: this._id
     });
