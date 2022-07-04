@@ -29,17 +29,14 @@ process.on('SIGINT', () => process.exit());
     app.set('db', db);
     app.set('view engine', 'twig');
 
-
     // Add middleware
     app.use('/storage', express.static(path.join(__dirname, '/storage/public')));
     app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
-    app.use('/api/*', express.json());
-
+    app.use(express.json());
 
     // Register all app routes.
     routes(app);
-
 
     // Start server.
     app.listen(app.get('port'), () => {
