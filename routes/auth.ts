@@ -5,8 +5,8 @@ import AuthValidator from '../validators/auth';
 
 
 export default (app: Application) => {
-    app.get('/api/v1/auth/me', AuthMiddleware, AuthController.getMe);
-    app.post('/api/v1/auth/login', AuthValidator.login, AuthController.login);
-    app.post('/api/v1/auth/signup', AuthValidator.signup, AuthController.signup);
-    app.post('/api/v1/auth/logout', AuthMiddleware, AuthController.logout);
+    app.get('/auth/me', AuthMiddleware, AuthController.getMe);
+    app.post('/auth/login', AuthValidator.login, AuthController.login);
+    app.post('/auth/signup', AuthValidator.signup, AuthController.signup);
+    app.post('/auth/logout', AuthMiddleware, AuthController.logout);
 };
