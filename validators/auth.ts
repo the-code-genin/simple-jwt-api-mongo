@@ -1,57 +1,48 @@
 import { NextFunction, Request, Response } from 'express'
-import Validator from 'validatorjs'
-import UserModel from '../models/user';
-import { ConflictError, InvalidFormDataError } from '../lib/errors';
+import Users from '../database/repositories/users';
+import { ConflictError, InvalidFormDataError } from '../lib/responses/errors';
+import Joi from 'joi';
 
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {
-        let rules = {
-            email: 'required|email',
-            password: 'required|min:6'
-        };
+        const schema = Joi.object({
+            email: Joi.string()
+                .required()
+                .email()
+                .message("Invalid email supplied"),
 
-        let messages = {
-            'email.required': 'Email address is required',
-            'email.email': 'A valid email address is required',
-            'password.required': 'Password is required',
-            'password.min': 'Password must be at least 6 characters long'
-        };
+            password: Joi.string()
+                .required()
+                .min(6)
+                .message("Password is required and must be at least 6 characters long"),
+        });
+        const validationResult = schema.validate(req.body);
 
-        let validation = new Validator(req.body, rules, messages);
-
-        if (validation.fails()) {
-            res.status(400)
-                .json(InvalidFormDataError(String(validation.errors.first(Object.keys(validation.errors.all())[0]))));
-            return;
+        if (validationResult.error) {
+            return InvalidFormDataError(res, String(validationResult.error));
         }
 
         next();
     }
 
     static async signup(req: Request, res: Response, next: NextFunction) {
-        let rules = {
-            email: 'required|email',
-            password: 'required|min:6'
-        };
+        const schema = Joi.object({
+            email: Joi.string()
+                .required()
+                .email()
+                .message("Invalid email supplied"),
 
-        let messages = {
-            'email.required': 'Email address is required',
-            'email.email': 'A valid email address is required',
-            'password.required': 'Password is required',
-            'password.min': 'Password must be at least 6 characters long'
-        };
+            password: Joi.string()
+                .required()
+                .min(6)
+                .message("Password is required and must be at least 6 characters long"),
+        });
+        const validationResult = schema.validate(req.body);
 
-        let validation = new Validator(req.body, rules, messages);
-
-        if (validation.fails()) {
-            res.status(400)
-                .json(InvalidFormDataError(String(validation.errors.first(Object.keys(validation.errors.all())[0]))));
-            return;
-        }
-
-        if (await UserModel.countDocuments({ email: req.body.email }).exec() != 0) {
-            res.status(409).json(ConflictError('This email is not available.'));
-            return;
+        if (validationResult.error) {
+            return InvalidFormDataError(res, String(validationResult.error));
+        } else if (await Users.getUsersWithEmailCount(req.body.email) > 0) {
+            return ConflictError(res, "This email is not available.");
         }
 
         next();
