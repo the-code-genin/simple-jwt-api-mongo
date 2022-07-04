@@ -1,101 +1,71 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
-import { AuthenticationError, ServerError } from "../lib/errors";
-import JWT from "../lib/jwt";
-import UserModel, { User } from "../models/user";
-import AuthToken from "../models/auth-token";
+import { AuthenticationError, ServerError } from "../lib/responses/errors";
+import JWT from "../lib/helpers/jwt";
+import Users from "../database/repositories/users";
+import SuccessResponse from "../lib/responses/success-response";
+import { User } from "../database/models/user";
 
 export default class AuthController {
-    /**
-     * Generate JWT token for a user upon successful credential validation
-     */
     static async login(req: Request, res: Response) {
-        let user: User | undefined;
+        let user: User | null;
 
         try {
-            user = await UserModel.findOne({ email: req.body.email }).exec();
-
+            user = await Users.getUserByEmail(req.body.email);
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
             } else if (!await bcrypt.compare(req.body.password, String(user.password))) {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
         } catch (e) {
-            res.status(401).json(AuthenticationError((e as Error).message));
-            return;
+            return AuthenticationError(res, (e as Error).message);
         }
 
-        res.status(200).json({
-            success: true,
-            payload: {
-                data: user.toJSON(),
-                access_token: JWT.generateAccessToken(user),
-                token_type: 'bearer'
-            }
+        return SuccessResponse(res, {
+            data: Users.toJSON(user),
+            access_token: JWT.generateAccessToken(user),
+            token_type: 'bearer'
         });
     }
 
-    /**
-     * Sign a user up and generate the initial JWT auth token
-     */
     static async signup(req: Request, res: Response) {
-        let user: User | undefined;
+        let user: User | null;
 
         try {
-            user = (new UserModel) as User;
-            user.email = req.body.email;
-            user.password = await bcrypt.hash(req.body.password, 10);
-            user = await user.save();
+            user = await Users.insert({
+                email: req.body.email,
+                password: await bcrypt.hash(req.body.password, 10)
+            });
         } catch (e) {
-            res.status(500).json(ServerError((e as Error).message));
-            return;
+            return ServerError(res, (e as Error).message);
         }
 
-        res.status(201).json({
-            success: true,
-            payload: {
-                data: user.toJSON(),
-                access_token: JWT.generateAccessToken(user),
-                token_type: 'bearer'
-            }
-        });
+        return SuccessResponse(res, {
+            data: Users.toJSON(user),
+            access_token: JWT.generateAccessToken(user),
+            token_type: 'bearer'
+        }, 201);
     }
 
-    /**
-     * Invalidate a user's auth token
-     */
     static async logout(req: Request, res: Response) {
+        const authUser = req.app.get('authUser') as User;
+
         try {
             let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
             let token = matches[1].trim();
-
-
-            // Add token to list of invalidated tokens.
-            let user = req.app.get('authUser') as User;
-            await AuthToken.create({
-                token,
-                user_id: user._id
-            });
+            await Users.addUserAuthToken(Number(authUser.id), token);
         } catch (e) {
-            res.status(500).json(ServerError((e as Error).message));
-            return;
+            return ServerError(res, (e as Error).message);
         }
 
-        res.status(200).json({
-            success: true,
-            payload: {}
-        });
+        return SuccessResponse(res, {});
     }
 
-    /**
-     * Request a user object
-     */
     static async getMe(req: Request, res: Response) {
-        res.status(200).json({
-            success: true,
-            payload: {
-                data: (req.app.get('authUser') as User).toJSON()
-            }
+        const user = req.app.get('authUser') as User;
+
+        return SuccessResponse(res, {
+            data: Users.toJSON(user)
         });
     }
 }

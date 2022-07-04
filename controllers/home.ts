@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+import SuccessResponse from "../lib/responses/success-response";
 
 export default class HomeController {
     static index(req: Request, res: Response) {
-        res.status(200).render('index.twig');
+        return SuccessResponse(res, {});
     }
 }
