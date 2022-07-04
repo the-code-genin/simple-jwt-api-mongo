@@ -16,8 +16,10 @@ process.on('SIGINT', () => process.exit());
     // Connect to db.
     const db = await connect(String(process.env.DB_URI), {
         dbName: String(process.env.DB_NAME),
-        user: String(process.env.DB_USERNAME),
-        pass: String(process.env.DB_PASSWORD)
+        poolSize: 200,
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
     });
 
     // Configure server.
