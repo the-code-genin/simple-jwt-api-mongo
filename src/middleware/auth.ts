@@ -1,5 +1,5 @@
 import jwt from '../helpers/jwt'
-import { AuthenticationError } from '../helpers/responses/errors'
+import { AuthenticationError } from '../responses/errors'
 import { NextFunction, Request, Response } from 'express';
 import Users from '../database/repositories/users';
 import { User } from '../database/models/user';
