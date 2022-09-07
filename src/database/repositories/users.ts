@@ -66,6 +66,12 @@ export default class Users {
     }
 
     static toJSON(user: User) {
-        return user.toJSON();
+        let output = Object.assign(user.toObject(), {
+            id: user._id
+        });
+        delete output._id;
+        delete output.__v;
+        delete output.password;
+        return output;
     }
 }
