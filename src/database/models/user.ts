@@ -1,4 +1,4 @@
-import { Document, LeanDocument, model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 export interface User extends Document {
     email?: string,

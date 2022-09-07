@@ -12,7 +12,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
 
     let token = (/^Bearer (.+)$/i.exec(header) as string[])[1].trim();
     let id = jwt.verifyAccessToken(token);
-    if (!id) { // Invalid Bearer token
+    if (!id) {
         return AuthenticationError(res, "Bad/Expired token.");
     }
 
