@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import SuccessResponse from "../lib/responses/success-response";
+import SuccessResponse from "../responses/success";
 
 export default class HomeController {
     static index(req: Request, res: Response) {
