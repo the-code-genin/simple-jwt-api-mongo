@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { AuthenticationError, ServerError } from "../responses/errors";
+import { AuthenticationError, ServerError, SuccessResponse } from "../responses";
 import JWT from "../helpers/jwt";
 import Users from "../database/repositories/users";
-import SuccessResponse from "../responses/success";
 import { User } from "../database/models/user";
 
 export default class AuthController {

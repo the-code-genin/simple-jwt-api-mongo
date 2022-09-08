@@ -34,3 +34,10 @@ export function ConflictError(res: Response, message = "The resource you are try
 export function ServerError(res: Response, message = "Server Error!") {
     return ApplicationError(res, 500, "ServerError", message);
 }
+
+export function SuccessResponse<T>(res: Response, payload: T, status = 200) {
+    return res.status(status).json({
+        success: true,
+        payload: payload
+    });
+}

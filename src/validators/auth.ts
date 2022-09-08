@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Users from "../database/repositories/users";
-import { ConflictError, InvalidFormDataError } from "../responses/errors";
+import { ConflictError, InvalidFormDataError } from "../responses";
 import Joi from "joi";
 
 export default class AuthValidator {
