@@ -7,7 +7,8 @@
     "test": "ts-mocha tests/*.test.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "lint": "eslint src"
   },
   "author": "Mohammed Adekunle <adekunle3317@gmail.com>",
   "license": "MIT",
@@ -30,6 +31,9 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.19",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "eslint": "^8.23.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
     "ts-mocha": "^8.0.0",
