@@ -5,15 +5,17 @@ import express from "express";
 import corsMiddleware from "cors";
 import routes from "./routes";
 import config from "./config";
+import {resolve as resolvePath} from "path";
 
 process.on("SIGINT", () => process.exit());
 
 (async function () {
-    dotenv.config();
+    dotenv.config({ path: resolvePath(__dirname, "../.env") });
+    const conf = config();
 
     // Connnect to db
-    await connect(config.db.uri, {
-        dbName: config.db.name,
+    await connect(conf.db.uri, {
+        dbName: conf.db.name,
         poolSize: 200,
         useCreateIndex: true,
         useNewUrlParser: true,
@@ -29,7 +31,7 @@ process.on("SIGINT", () => process.exit());
     routes(app);
 
     // Start server.
-    app.listen(config.app.port, () => {
-        console.log(`App running on :${config.app.port}`);
+    app.listen(conf.app.port, () => {
+        console.log(`App running on :${conf.app.port}`);
     });
 })();
