@@ -40,7 +40,7 @@ export default class Users {
 
     static addUserAuthToken(userId: number, token: string) {
         return new Promise<null>((resolve, reject) => {
-            AuthTokenModel.create({ user_id: userId, token }, (err, doc) => {
+            AuthTokenModel.create({ user_id: userId, token }, (err) => {
                 if (err != null) reject(err);
                 else resolve(null);
             });
@@ -58,7 +58,7 @@ export default class Users {
 
     static updateById(userId: number, user: Partial<User>) {
         return new Promise<null>((resolve, reject) => {
-            UserModel.updateOne({_id: userId}, user, null, (err, res) => {
+            UserModel.updateOne({_id: userId}, user, null, (err) => {
                 if (err != null) reject(err);
                 else resolve(null);
             });
@@ -66,7 +66,7 @@ export default class Users {
     }
 
     static toJSON(user: User) {
-        let output = Object.assign(user.toObject(), {
+        const output = Object.assign(user.toObject(), {
             id: user._id
         });
         delete output._id;

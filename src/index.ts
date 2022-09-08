@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-import 'reflect-metadata';
-import { connect } from 'mongoose';
-import express from 'express';
-import corsMiddleware from 'cors';
-import routes from './routes';
+import dotenv from "dotenv";
+import "reflect-metadata";
+import { connect } from "mongoose";
+import express from "express";
+import corsMiddleware from "cors";
+import routes from "./routes";
 import config from "./config";
 
-process.on('SIGINT', () => process.exit());
+process.on("SIGINT", () => process.exit());
 
 (async function () {
     dotenv.config();

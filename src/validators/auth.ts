@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express'
-import Users from '../database/repositories/users';
-import { ConflictError, InvalidFormDataError } from '../responses/errors';
-import Joi from 'joi';
+import { NextFunction, Request, Response } from "express";
+import Users from "../database/repositories/users";
+import { ConflictError, InvalidFormDataError } from "../responses/errors";
+import Joi from "joi";
 
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {

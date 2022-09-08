@@ -6,4 +6,4 @@ export default {
         uri: String(process.env.DB_URI),
         name: String(process.env.DB_NAME)
     }
-}
+};

@@ -7,7 +7,7 @@ export interface AuthToken extends Document {
     updated_at?: Date
 }
 
-let schema = new Schema<AuthToken>({
+const schema = new Schema<AuthToken>({
     token: {
         type: String,
         index: true,
@@ -26,6 +26,6 @@ let schema = new Schema<AuthToken>({
         type: Date,
         default: Date.now
     }
-}, { collection: 'auth_tokens' });
+}, { collection: "auth_tokens" });
 
-export default model('AuthToken', schema);
+export default model("AuthToken", schema);

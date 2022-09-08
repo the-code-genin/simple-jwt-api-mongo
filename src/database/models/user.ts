@@ -3,12 +3,12 @@ import { Document, model, Schema } from "mongoose";
 export interface User extends Document {
     email?: string,
     password?: string,
-    status?: 'active' | 'banned',
+    status?: "active" | "banned",
     created_at?: Date,
     updated_at?: Date
 }
 
-let schema = new Schema<User>({
+const schema = new Schema<User>({
     email: {
         type: String,
         index: true,
@@ -17,9 +17,9 @@ let schema = new Schema<User>({
     password: String,
     status: {
         type: String,
-        enum: ['active', 'banned'],
+        enum: ["active", "banned"],
         required: true,
-        default: 'active'
+        default: "active"
     },
     created_at: {
         type: Date,
@@ -29,6 +29,6 @@ let schema = new Schema<User>({
         type: Date,
         default: Date.now
     }
-}, { collection: 'users' });
+}, { collection: "users" });
 
-export default model('User', schema);
+export default model("User", schema);
