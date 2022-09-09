@@ -38,16 +38,16 @@ const myTransports: winston.transport[] = [
 // Set default log level
 let level = "";
 switch (config.app.env) {
-    case "production":
-        level = "info";
+case "production":
+    level = "info";
     break;
 
-    case "test":
-        level = "debug";
+case "test":
+    level = "debug";
     break;
 
-    default:
-        level = "http";
+default:
+    level = "http";
     break;
 }
 
