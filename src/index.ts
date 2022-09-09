@@ -9,8 +9,6 @@ import Logger from "./logger";
 process.on("SIGINT", () => process.exit());
 
 (async function () {
-    Logger.debug("Configured env variables");
-
     // Connnect to db
     await connect(config.db.uri, {
         dbName: config.db.name,
