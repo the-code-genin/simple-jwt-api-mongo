@@ -29,7 +29,7 @@ export default class Users {
         });
     }
 
-    static checkUserHasAuthToken(userId: number, token: string) {
+    static checkUserHasAuthToken(userId: string, token: string) {
         return new Promise<boolean>((resolve, reject) => {
             AuthTokenModel.countDocuments({ user_id: userId, token }, (err, count) => {
                 if (err != null) reject(err);
@@ -38,7 +38,7 @@ export default class Users {
         });
     }
 
-    static addUserAuthToken(userId: number, token: string) {
+    static addUserAuthToken(userId: string, token: string) {
         return new Promise<null>((resolve, reject) => {
             AuthTokenModel.create({ user_id: userId, token }, (err) => {
                 if (err != null) reject(err);
@@ -56,7 +56,7 @@ export default class Users {
         });
     }
 
-    static updateById(userId: number, user: Partial<User>) {
+    static updateById(userId: string, user: Partial<User>) {
         return new Promise<null>((resolve, reject) => {
             UserModel.updateOne({_id: userId}, user, null, (err) => {
                 if (err != null) reject(err);

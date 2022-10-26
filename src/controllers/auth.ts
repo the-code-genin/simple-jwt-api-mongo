@@ -52,7 +52,7 @@ export default class AuthController {
         try {
             const matches = /^Bearer (.+)$/i.exec(String(req.get("Authorization"))) as RegExpExecArray;
             const token = matches[1].trim();
-            await Users.addUserAuthToken(Number(authUser.id), token);
+            await Users.addUserAuthToken(authUser.id, token);
         } catch (e) {
             return ServerError(res, (e as Error).message);
         }
