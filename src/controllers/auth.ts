@@ -13,7 +13,7 @@ export default class AuthController {
             user = await Users.getUserByEmail(req.body.email);
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
-            } else if (!await bcrypt.compare(req.body.password, String(user.password))) {
+            } else if (!(await bcrypt.compare(req.body.password, String(user.password)))) {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
         } catch (e) {
@@ -23,7 +23,7 @@ export default class AuthController {
         return SuccessResponse(res, {
             data: Users.toJSON(user),
             access_token: JWT.generateAccessToken(user),
-            token_type: "bearer"
+            token_type: "bearer",
         });
     }
 
@@ -33,17 +33,21 @@ export default class AuthController {
         try {
             user = await Users.insert({
                 email: req.body.email,
-                password: await bcrypt.hash(req.body.password, 10)
+                password: await bcrypt.hash(req.body.password, 10),
             });
         } catch (e) {
             return ServerError(res, (e as Error).message);
         }
 
-        return SuccessResponse(res, {
-            data: Users.toJSON(user),
-            access_token: JWT.generateAccessToken(user),
-            token_type: "bearer"
-        }, 201);
+        return SuccessResponse(
+            res,
+            {
+                data: Users.toJSON(user),
+                access_token: JWT.generateAccessToken(user),
+                token_type: "bearer",
+            },
+            201
+        );
     }
 
     static async logout(req: Request, res: Response) {
@@ -64,7 +68,7 @@ export default class AuthController {
         const user = req.app.get("authUser") as User;
 
         return SuccessResponse(res, {
-            data: Users.toJSON(user)
+            data: Users.toJSON(user),
         });
     }
 }

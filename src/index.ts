@@ -15,7 +15,7 @@ process.on("SIGINT", () => process.exit());
         poolSize: 200,
         useCreateIndex: true,
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     });
     Logger.debug("Connected to DB");
 

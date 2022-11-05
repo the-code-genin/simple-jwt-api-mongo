@@ -2,7 +2,9 @@ import winston, { createLogger, format, transports } from "winston";
 import config from "./config";
 
 // Logging format
-const timeStampFormat = format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SS Z" });
+const timeStampFormat = format.timestamp({
+    format: "YYYY-MM-DD HH:mm:ss.SS Z",
+});
 const messageFormat = format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`);
 
 // Configure log levels
@@ -38,17 +40,17 @@ const myTransports: winston.transport[] = [
 // Set default log level
 let level = "";
 switch (config.app.env) {
-case "production":
-    level = "info";
-    break;
+    case "production":
+        level = "info";
+        break;
 
-case "test":
-    level = "debug";
-    break;
+    case "test":
+        level = "debug";
+        break;
 
-default:
-    level = "http";
-    break;
+    default:
+        level = "http";
+        break;
 }
 
 const Logger = createLogger({

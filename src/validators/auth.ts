@@ -6,10 +6,7 @@ import Joi from "joi";
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
-            email: Joi.string()
-                .required()
-                .email()
-                .message("Invalid email supplied"),
+            email: Joi.string().required().email().message("Invalid email supplied"),
 
             password: Joi.string()
                 .required()
@@ -27,10 +24,7 @@ export default class AuthValidator {
 
     static async signup(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
-            email: Joi.string()
-                .required()
-                .email()
-                .message("Invalid email supplied"),
+            email: Joi.string().required().email().message("Invalid email supplied"),
 
             password: Joi.string()
                 .required()
@@ -41,7 +35,7 @@ export default class AuthValidator {
 
         if (validationResult.error) {
             return InvalidFormDataError(res, String(validationResult.error));
-        } else if (await Users.getUsersWithEmailCount(req.body.email) > 0) {
+        } else if ((await Users.getUsersWithEmailCount(req.body.email)) > 0) {
             return ConflictError(res, "This email is not available.");
         }
 
