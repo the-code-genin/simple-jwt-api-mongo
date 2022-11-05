@@ -28,10 +28,10 @@ winston.addColors(colors);
 // Configure transports
 const myTransports: winston.transport[] = [
     new transports.File({
-        filename: "../logs/error.log",
+        filename: "./logs/error.log",
         level: "error",
     }),
-    new transports.File({ filename: "../logs/all.log" }),
+    new transports.File({ filename: "./logs/all.log" }),
     new transports.Console({
         format: format.combine(timeStampFormat, format.colorize(), messageFormat),
     }),
