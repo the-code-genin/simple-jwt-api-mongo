@@ -13,8 +13,11 @@ export default class JWT {
     }
 
     static generateAccessToken(user: User): string {
-        return jwt.sign({
-            sub: user._id
-        }, config.app.key);
+        return jwt.sign(
+            {
+                sub: user._id,
+            },
+            config.app.key
+        );
     }
 }

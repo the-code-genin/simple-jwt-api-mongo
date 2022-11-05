@@ -58,7 +58,7 @@ export default class Users {
 
     static updateById(userId: string, user: Partial<User>) {
         return new Promise<null>((resolve, reject) => {
-            UserModel.updateOne({_id: userId}, user, null, (err) => {
+            UserModel.updateOne({ _id: userId }, user, null, (err) => {
                 if (err != null) reject(err);
                 else resolve(null);
             });
@@ -67,7 +67,7 @@ export default class Users {
 
     static toJSON(user: User) {
         const output = Object.assign(user.toObject(), {
-            id: user._id
+            id: user._id,
         });
         delete output._id;
         delete output.__v;

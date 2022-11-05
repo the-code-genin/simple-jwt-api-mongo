@@ -6,8 +6,8 @@ export function ApplicationError(res: Response, code: number, type: string, mess
         error: {
             code,
             type,
-            message
-        }
+            message,
+        },
     });
 }
 
@@ -23,7 +23,10 @@ export function ForbiddenError(res: Response, message = "User is forbidden from 
     return ApplicationError(res, 403, "ForbiddenError", message);
 }
 
-export function NotFoundError(res: Response, message = "The resource you were looking for was not found on this server.") {
+export function NotFoundError(
+    res: Response,
+    message = "The resource you were looking for was not found on this server."
+) {
     return ApplicationError(res, 404, "NotFoundError", message);
 }
 
@@ -38,6 +41,6 @@ export function ServerError(res: Response, message = "Server Error!") {
 export function SuccessResponse<T>(res: Response, payload: T, status = 200) {
     return res.status(status).json({
         success: true,
-        payload: payload
+        payload: payload,
     });
 }
