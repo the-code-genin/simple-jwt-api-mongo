@@ -2,11 +2,11 @@ import UserModel, { User } from "../models/user";
 import AuthTokenModel from "../models/auth-token";
 
 export default class Users {
-    static getUsersWithEmailCount(email: string) {
-        return new Promise<number>((resolve, reject) => {
+    static emailTaken(email: string) {
+        return new Promise<boolean>((resolve, reject) => {
             UserModel.countDocuments({ email }, (err, count) => {
                 if (err != null) reject(err);
-                else resolve(count);
+                else resolve(count != 0);
             });
         });
     }
