@@ -4,7 +4,7 @@ import Logger from "../logger";
 
 export default (app: Application) => {
     app.use((req: Request, res: Response, next: NextFunction) => {
-        Logger.http(`Route not found: ${req.path}`);
+        Logger.http(`Route not found: ${req.method} ${req.path}`);
         return NotFoundError(res);
     });
 
