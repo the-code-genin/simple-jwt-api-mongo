@@ -35,6 +35,6 @@ process.on("SIGINT", () => process.exit());
             Logger.info(`App running on :${config.app.port}`);
         });
     } catch (e) {
-        Logger.error((e as Error).message);
+        Logger.error((e as Error).stack);
     }
 })();
