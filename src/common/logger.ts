@@ -1,5 +1,5 @@
 import winston, { createLogger, format, transports } from "winston";
-import config from "./config";
+import config from "../config";
 
 // Logging format
 const timeStampFormat = format.timestamp({

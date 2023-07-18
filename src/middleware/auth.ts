@@ -1,4 +1,4 @@
-import jwt from "../helpers/jwt";
+import jwt from "../common/jwt";
 import { BadRequestError } from "../responses";
 import { NextFunction, Request, Response } from "express";
 import Users from "../database/repositories/users";

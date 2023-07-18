@@ -1,6 +1,6 @@
 import { Application, NextFunction, Request, Response } from "express";
 import { NotFoundError, ServerError } from "../responses";
-import Logger from "../logger";
+import Logger from "../common/logger";
 
 export default (app: Application) => {
     app.use((req: Request, res: Response, next: NextFunction) => {

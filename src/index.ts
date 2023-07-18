@@ -4,7 +4,7 @@ import express from "express";
 import corsMiddleware from "cors";
 import routes from "./routes";
 import config from "./config";
-import Logger from "./logger";
+import Logger from "./common/logger";
 
 process.on("SIGINT", () => process.exit());
 

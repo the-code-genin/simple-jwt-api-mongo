@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { AuthorizationError, ServerError, SuccessResponse } from "../responses";
-import JWT from "../helpers/jwt";
+import JWT from "../common/jwt";
 import Users from "../database/repositories/users";
 import { User } from "../database/models/user";
 
